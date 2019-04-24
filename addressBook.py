@@ -1,48 +1,41 @@
 import argparse
 import re
+import sys
 
 class address_book:
     def __init__(self):
         self.address_book = {}
 
     def isEmail(self,number):
-        variable = 1
-
         regex = "[^@]+@[^@]+\.[^@]+"
         if re.search(regex, number) and len(number) < 320:
-            print("valid")
             return (True)
 
         else:
-            print("not valid")
+            print("invalid email")
             return False
 
     def isAddress(self,number):
         if len(number) < 60:
-            print("valid")
             return (True)
 
         else:
-            print("not valid")
+            print("invalid address")
             return False
     def isZipCode(self,number):
         number = number.replace("-", "")
         number = number.replace(" ", "")
 
         if len(number) < 16 and number.isdigit() and len(number) > 4:
-            print("valid")
             return (True)
 
         else:
-            print("not valid")
+            print("invalid zipcode")
             return False
     def isPhoneNumber(self,number):
-        variable = 1
-
         regex = "\w{3}-\w{3}-\w{4}"
 
         if re.search(regex, number):
-            print("valid number")
             return True
         else:
             number = number.replace("-", "")
@@ -50,26 +43,30 @@ class address_book:
             number = number.replace(")", "")
             number = number.replace(" ", "")
             if (len(number) == 10) and number.isdigit():
-                print("valid")
                 return True
             else:
-                print("invalid")
+                print("invalid phone number")
                 return False
 
     def isName(self,number):
         if len(number) < 60:
-            print("valid")
             return (True)
 
         else:
-            print("not valid")
+            print("invalid name")
             return False
 
-    def record_add(self, Name, address):
+    def addCheck(self, name, address, zip, email, number):
+        if self.isName(name) and self.isAddress(address) and self.isZipCode(zip) and self.isEmail(email) and self.isPhoneNumber(number):
+            return True
+        else:
+            return False
+
+    def record_add(self, name, address, zip, email, number):
         if len(self.address_book) > 5:
             return None
         else:
-            self.address_book[Name] = address
+            self.address_book[name] = address, zip, email, number
             return True
 
     def record_del(self, Name):
@@ -111,7 +108,7 @@ class address_book:
                 if type(arg1) != str or type(arg2) != str:
                     print("Please enter a valid input")
                 else:
-                    out = self.record_add(arg1, arg2)
+                    #out = self.record_add(arg1, arg2)
                     if out == None:
                         print("Record not added, address book is full")
                     elif out == True:
@@ -126,12 +123,52 @@ class address_book:
             elif sel == 4:
                 flag = False
                 print("Thanks for using the most advanced address book system in the world. Have a nice day!")
+    
+    def new_shell(self):
+        flag = True
+        while(flag):
+            seel = input()
+            if len(seel) == 0:
+                print("please try again")
+                seel = None
+            elif seel.split(' ')[0] == 'ADD':
+                try:
+                    name = seel.split('"')[1]
+                    address = seel.split('"')[3] 
+                    rest = seel.split('"')[4]
+                    zip = rest.split(" ")[1]
+                    email = rest.split(" ")[2]
+                    phone = ''.join(rest.split(" ")[3:])
+                    if self.addCheck(name, address, zip, email, phone):
+                        self.record_add(name, address, zip, email, phone)
+                        print(self.address_book)
+                    else:
+                        print("ADD command rejected")
+                except:
+                    print("Invalid Command try again")
+                    seel = None
+                seel = None
+            elif seel.split(' ')[0] == 'DEL':
+                name = seel.split('"')[1]
+            elif seel.split(' ')[0] == 'GET':
+                name = seel.split('"')[1]
+            elif seel.split(' ')[0] == 'UPDATE':
+                name = seel.split('"')[1]
+            elif seel.split(' ')[0] == 'LIST':
+                name = seel.split('"')[1]
+            elif seel.split(' ')[0] == "EXIT":
+                print("GOODBYE")
+                sys.exit()
+
+
+
+
 
 
 if __name__ == "__main__":
 
     this = address_book()
-    this.old_shell()
+    this.new_shell()
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-ADD", help="Add a user to the Address Book")
