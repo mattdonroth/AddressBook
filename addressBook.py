@@ -133,8 +133,12 @@ class address_book:
                 print("Enter new phone number:")
                 phone = None
         else:
-            print("Invalid option")
-            number = None
+            print("Try again")
+            number = input()
+            self.update_record(record, number, old)     
+
+        
+
             
 
 
