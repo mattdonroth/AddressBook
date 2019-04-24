@@ -82,9 +82,21 @@ class address_book:
         try:
             out = self.address_book[Name]
             print("Name: " + str(Name) +  "\nAddress: " + str(out[0]) + " " + str(out[1]) + "\nEmail: " + str(out[2]) + "\nPhone: " + str(out[3]))
+            return out
         except:
             print("Uh oh")
-    
+            return None
+
+    def update_record(self, record, number, old):
+        if number == '1':
+            print("Enter new name:")
+            name = input()
+            self.address_book[name] = self.address_book.pop(old)
+            print("Updated name to " + name)
+        #TODO ADD OTHER OPTIONS
+            
+
+
     def new_shell(self):
         print("Welcome to Address Book Program: Please enter a desired command:")
         flag = True
@@ -133,7 +145,18 @@ class address_book:
                     print("Invalid command try again")
                     seel = None
             elif seel.split(' ')[0] == 'UPDATE':
-                name = seel.split('"')[1]
+                try:
+                    name = seel.split('"')[1]
+                    if self.isName(name) and name in self.address_book.keys():
+                        print('1: Update Name\n2. Update Zip code\n3: Update Address\n4: Update Email\n5: Update Phone Number')
+                        seel = input()
+                        self.update_record(self.address_book[name], seel, name)
+                    else:
+                        print("GET command rejected, name not found")
+                        seel = None
+                except:
+                    print("Invalid command try again")
+                    seel = None
             elif seel.split(' ')[0] == 'LIST':
                 for index, name in enumerate(self.address_book.keys()):
                     print("Address Book Record Number " + str(index+1) + ":")
