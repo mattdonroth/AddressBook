@@ -1,4 +1,3 @@
-import argparse
 import re
 import sys
 
@@ -69,6 +68,7 @@ class address_book:
             print("Name already exists")
         else:
             self.address_book[name] = address, zip, email, number
+            print("Successfully added " + name)
             return True
 
     def record_del(self, Name):
@@ -86,6 +86,7 @@ class address_book:
             print("Uh oh")
     
     def new_shell(self):
+        print("Welcome to Address Book Program: Please enter a desired command:")
         flag = True
         while(flag):
             seel = input()
@@ -154,11 +155,3 @@ if __name__ == "__main__":
     this = address_book()
     this.new_shell()
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-ADD", help="Add a user to the Address Book")
-    parser.add_argument("-DEL", help="Delete a user from the Address Book")
-    parser.add_argument("-GET", help="Get a user from the Address Book")
-    parser.add_argument("-UPDATE", help="Update an existing user in the Address Book")
-    parser.add_argument("-LIST", help="List all users in the Address Book")
-    args = parser.parse_args()
-    print(args)
