@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-test_commands = ['ADD "John Llanf" "123 Sesame Street" 92110 john@mail.com 800-555-5555', 'LIST']
+test_commands = ['2', 'fuzzAcct', 'ADD "John Llanf" "123 Sesame Street" 92110 john@mail.com 800-555-5555', 'LIST']
 
 
 

@@ -1,5 +1,6 @@
 import re
 import sys
+import login
 
 class address_book:
     def __init__(self):
@@ -143,7 +144,7 @@ class address_book:
 
 
     def new_shell(self):
-        print("Welcome to Address Book Program: Please enter a desired command:")
+        print("Please enter a desired command:")
         flag = True
         while(flag):
             seel = input()
@@ -214,12 +215,23 @@ class address_book:
                 seel = None
 
 
+def login_prompt():
+    print("Welcome to Address Book Program: Please Login or Create an Account")
+    print("1) Login\n2) Create new Account")
+    choice = input()
+    if choice == '1':
+        print("Aw geez rick sorry")
+        sys.exit()
+    elif choice == '2':
+        return login.create_account()
+
 
 
 
 
 if __name__ == "__main__":
 
-    this = address_book()
-    this.new_shell()
+    account = login_prompt()
+    
+    account.addressBook.new_shell()
 
