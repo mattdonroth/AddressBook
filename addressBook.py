@@ -82,47 +82,6 @@ class address_book:
             return out
         except:
             return None
-
-    def old_shell(self):
-        flag = True
-        while flag:
-            seel = input(
-                "Please Select An Option:\n1. Get a Record\n2. Add a Record\n3. Delete a Record\n4. Exit\n")
-            try:
-                sel = int(seel)
-            except:
-                print("Please enter an integer.")
-                sel = None
-            if sel > 5:
-                print("Please enter a valid selection")
-            elif sel == 1:
-                arg = input("Please enter a name to lookup:")
-                out = self.record_get(arg)
-                if out == None:
-                    print("Record Not Found")
-                else:
-                    print(out)
-            elif sel == 2:
-                arg1 = input("Please enter the Name to add:")
-                arg2 = input("Please enter the Address to add:")
-                if type(arg1) != str or type(arg2) != str:
-                    print("Please enter a valid input")
-                else:
-                    #out = self.record_add(arg1, arg2)
-                    if out == None:
-                        print("Record not added, address book is full")
-                    elif out == True:
-                        print("Record added")
-            elif sel == 3:
-                arg1 = input("Please enter the Name to remove:")
-                out = self.record_del(arg1)
-                if out == True:
-                    print("Record Removed")
-                elif out == False:
-                    print("Record not found.")
-            elif sel == 4:
-                flag = False
-                print("Thanks for using the most advanced address book system in the world. Have a nice day!")
     
     def new_shell(self):
         flag = True
@@ -145,11 +104,21 @@ class address_book:
                     else:
                         print("ADD command rejected")
                 except:
-                    print("Invalid Command try again")
+                    print("Invalid command try again")
                     seel = None
                 seel = None
             elif seel.split(' ')[0] == 'DEL':
-                name = seel.split('"')[1]
+                try:
+                    name = seel.split('"')[1]
+                    if self.isName(name) and name in self.address_book.keys():
+                        self.record_del(name)
+                        print(self.address_book)
+                    else:
+                        print("DEL command rejected, name not found")
+                        seel = None
+                except:
+                    print("Invalid command try again")
+                    seel = None
             elif seel.split(' ')[0] == 'GET':
                 name = seel.split('"')[1]
             elif seel.split(' ')[0] == 'UPDATE':
@@ -159,6 +128,9 @@ class address_book:
             elif seel.split(' ')[0] == "EXIT":
                 print("GOODBYE")
                 sys.exit()
+            else:
+                print("Invalid command try again")
+                seel = None
 
 
 
