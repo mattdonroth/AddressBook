@@ -65,6 +65,8 @@ class address_book:
     def record_add(self, name, address, zip, email, number):
         if len(self.address_book) > 5:
             return None
+        elif name in self.address_book.keys():
+            print("Name already exists")
         else:
             self.address_book[name] = address, zip, email, number
             return True
@@ -79,16 +81,16 @@ class address_book:
     def record_get(self, Name):
         try:
             out = self.address_book[Name]
-            return out
+            print("Name: " + str(Name) +  "\nAddress: " + str(out[0]) + " " + str(out[1]) + "\nEmail: " + str(out[2]) + "\nPhone: " + str(out[3]))
         except:
-            return None
+            print("Uh oh")
     
     def new_shell(self):
         flag = True
         while(flag):
             seel = input()
             if len(seel) == 0:
-                print("please try again")
+                print("Please try again")
                 seel = None
             elif seel.split(' ')[0] == 'ADD':
                 try:
@@ -100,11 +102,10 @@ class address_book:
                     phone = ''.join(rest.split(" ")[3:])
                     if self.addCheck(name, address, zip, email, phone):
                         self.record_add(name, address, zip, email, phone)
-                        print(self.address_book)
                     else:
-                        print("ADD command rejected")
+                        print('ADD command rejected\nInput Outline: ADD "Name" "Address" Zipcode Email Phone\nEg: ADD "John" "123 Main" 92110 john@mail.com 9165155115')
                 except:
-                    print("Invalid command try again")
+                    print('Invalid command try again\nInput Outline: ADD "Name" "Address" Zipcode Email Phone\nEg: ADD "John" "123 Main" 92110 john@mail.com 9165155115')
                     seel = None
                 seel = None
             elif seel.split(' ')[0] == 'DEL':
@@ -120,11 +121,22 @@ class address_book:
                     print("Invalid command try again")
                     seel = None
             elif seel.split(' ')[0] == 'GET':
-                name = seel.split('"')[1]
+                try:
+                    name = seel.split('"')[1]
+                    if self.isName(name) and name in self.address_book.keys():
+                        self.record_get(name)
+                    else:
+                        print("GET command rejected, name not found")
+                        seel = None
+                except:
+                    print("Invalid command try again")
+                    seel = None
             elif seel.split(' ')[0] == 'UPDATE':
                 name = seel.split('"')[1]
             elif seel.split(' ')[0] == 'LIST':
-                name = seel.split('"')[1]
+                for index, name in enumerate(self.address_book.keys()):
+                    print("Address Book Record Number " + str(index+1) + ":")
+                    self.record_get(name)
             elif seel.split(' ')[0] == "EXIT":
                 print("GOODBYE")
                 sys.exit()
