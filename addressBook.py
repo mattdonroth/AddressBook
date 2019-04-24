@@ -91,9 +91,50 @@ class address_book:
         if number == '1':
             print("Enter new name:")
             name = input()
-            self.address_book[name] = self.address_book.pop(old)
-            print("Updated name to " + name)
-        #TODO ADD OTHER OPTIONS
+            if self.isName(name):
+                self.address_book[name] = self.address_book.pop(old)
+                print("Updated name to " + name)
+            else:
+                name = None
+        elif number == '2':
+            print("Enter new zipcode:")
+            zip = input()
+            if self.isZipCode(zip):
+                self.address_book[old] = (record[0], zip, record[2], record[3])
+                print("Updated zip code to " + zip)
+            else:
+                print("Enter new zipcode:")
+                zip = None
+        elif number == '3':
+            print("Enter new address:")
+            address = input()
+            if self.isAddress(address):
+                self.address_book[old] = (address, record[1], record[2], record[3])
+                print("Updated address to " + address)
+            else:
+                print("Enter new address:")
+                address = None
+        elif number == '4':
+            print("Enter new email:")
+            email = input()
+            if self.isEmail(email):
+                self.address_book[old] = (record[0], record[1], email, record[3])
+                print("Updated email to " + email)
+            else:
+                print("Enter new email:")
+                email = None
+        elif number == '5':
+            print("Enter new phone number:")
+            phone = input()
+            if self.isPhoneNumber(phone):
+                self.address_book[old] = (record[0], record[1], record[2], phone)
+                print("Updated phone number to " + phone)
+            else:
+                print("Enter new phone number:")
+                phone = None
+        else:
+            print("Invalid option")
+            number = None
             
 
 
@@ -154,8 +195,8 @@ class address_book:
                     else:
                         print("GET command rejected, name not found")
                         seel = None
-                except:
-                    print("Invalid command try again")
+                except Exception as e:
+                    print("Invalid command try again", e)
                     seel = None
             elif seel.split(' ')[0] == 'LIST':
                 for index, name in enumerate(self.address_book.keys()):
