@@ -1,10 +1,13 @@
 import re
 import sys
 import login
+import db
+
 
 class address_book:
-    def __init__(self):
-        self.address_book = {}
+    def __init__(self, data):
+        self.address_book = data
+        self.username = ''
 
     def isEmail(self,number):
         regex = "[^@]+@[^@]+\.[^@]+"
@@ -69,12 +72,14 @@ class address_book:
             print("Name already exists")
         else:
             self.address_book[name] = address, zip, email, number
+            db.add(name, address, zip, email, number, self.username)
             print("Successfully added " + name)
             return True
 
     def record_del(self, Name):
         try:
             del self.address_book[Name]
+            db.delete(Name, self.username)
             return True
         except:
             return False
@@ -172,7 +177,7 @@ class address_book:
                     name = seel.split('"')[1]
                     if self.isName(name) and name in self.address_book.keys():
                         self.record_del(name)
-                        print(self.address_book)
+                        print("Successfully deleted " + name)
                     else:
                         print("DEL command rejected, name not found")
                         seel = None
@@ -217,13 +222,13 @@ class address_book:
 
 def login_prompt():
     print("Welcome to Address Book Program: Please Login or Create an Account")
-    print("1) Login\n2) Create new Account")
+    print("Enter login command")
     choice = input()
-    if choice == '1':
-        print("Aw geez rick sorry")
-        sys.exit()
-    elif choice == '2':
-        return login.create_account()
+    split = choice.split(' ')
+    if split[0] == 'LOGIN':
+        return login.loadin_account(split[1], split[2])
+    
+
 
 
 
@@ -232,6 +237,5 @@ def login_prompt():
 if __name__ == "__main__":
 
     account = login_prompt()
-    
     account.addressBook.new_shell()
 
