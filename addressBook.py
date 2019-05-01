@@ -215,6 +215,10 @@ class address_book:
             elif seel.split(' ')[0] == "EXIT":
                 print("GOODBYE")
                 sys.exit()
+            elif seel.split(' ')[0] == "LOGOUT":
+                self.address_book = []
+                self.username = ''
+                print("Thank you for using our system")
             else:
                 print("Invalid command try again")
                 seel = None
@@ -235,7 +239,9 @@ def login_prompt():
 
 
 if __name__ == "__main__":
-
-    account = login_prompt()
-    account.addressBook.new_shell()
+    try:
+        account = login_prompt()
+        account.addressBook.new_shell()
+    except:
+        print("Invalid Login")
 
