@@ -101,11 +101,10 @@ while x < numDelAttempts:
 
 for test_command in test_commands:
     print(test_command)
-    '''
     p.stdin.write(test_command.encode())
     p.stdin.write('\n'.encode())
     p.stdin.flush()
-    '''
+    
 
 p.stdin.close()
 for line in p.stdout.readlines():
