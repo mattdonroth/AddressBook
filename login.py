@@ -15,7 +15,10 @@ class account:
 
 def login(username, password):
     if(db.check(username, password)):
-        loadin_account(username, password)
+        return True
+    else:
+        return False
+        
 
 
 def loadin_account(username, password):

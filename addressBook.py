@@ -212,9 +212,9 @@ class address_book:
                 for index, name in enumerate(self.address_book.keys()):
                     print("Address Book Record Number " + str(index+1) + ":")
                     self.record_get(name)
-            elif seel.split(' ')[0] == "EXIT":
+            elif seel.split(' ')[0] == "LOGOUT":
                 print("GOODBYE")
-                sys.exit()
+                main()
             else:
                 print("Invalid command try again")
                 seel = None
@@ -223,19 +223,33 @@ class address_book:
 def login_prompt():
     print("Welcome to Address Book Program: Please Login or Create an Account")
     print("Enter login command")
+    
     choice = input()
+    while choice is '':
+        choice = input()
     split = choice.split(' ')
     if split[0] == 'LOGIN':
-        return login.loadin_account(split[1], split[2])
+        if(login.login(split[1], split[2])):
+            return login.loadin_account(split[1], split[2])
+        else:
+            print('Invalid login')
+            main()
+    elif choice == 'QUIT':
+        print('Thank you!')
+        sys.exit()
+    else:
+        print('invalid command, try again')
+        main()
     
 
 
 
 
-
-
-if __name__ == "__main__":
-
+def main():
+    account = None
     account = login_prompt()
     account.addressBook.new_shell()
+
+if __name__ == "__main__":
+    main()
 

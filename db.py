@@ -17,14 +17,16 @@ def check(username, password):
     with db.cursor() as cursor:
       sql = """SELECT `username` from `python_DB`.`login` as `login` WHERE (`username` = %s) AND (`password` = %s);"""
       digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
+      
       digest.update(password.encode())
-      tuple = (username, digest.finalize())
+      sendpass = str(digest.finalize())
+      tuple = (username, sendpass)
       cursor.execute(sql, tuple)
       result = cursor.fetchall()
       if len(result) == 0:
-        print('user does not exist')
+        return False
       else:
-        print('user exists')
+        return True
   finally:
     db.commit()
     db.close()
