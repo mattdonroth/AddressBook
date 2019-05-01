@@ -6,7 +6,7 @@ def connect():
   mydb = pymysql.connect(
   host="localhost",
   user="root",
-  passwd="skipswife",
+  passwd="pass",
   db='python_DB'
   )
   return mydb
