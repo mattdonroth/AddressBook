@@ -229,10 +229,22 @@ def login_prompt():
         choice = input()
     split = choice.split(' ')
     if split[0] == 'LOGIN':
-        if(login.login(split[1], split[2])):
-            return login.loadin_account(split[1], split[2])
-        else:
+        try:
+            if(login.login(split[1], split[2])):
+                return login.loadin_account(split[1], split[2])
+            else:
+                print('Invalid login')
+                main()
+        except Exception as e:
             print('Invalid login')
+            main()
+    elif split[0] == 'NEW':
+        try:
+            login.new(split[1], split[2])
+            print("New User Created")
+            return login.loadin_account(split[1], split[2])
+        except Exception as e:
+            print(str(e))
             main()
     elif choice == 'QUIT':
         print('Thank you!')

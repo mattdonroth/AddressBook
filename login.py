@@ -18,6 +18,12 @@ def login(username, password):
         return True
     else:
         return False
+
+def new(username, password):
+    if(db.new(username, password)):
+        return True
+    else:
+        return False
         
 
 

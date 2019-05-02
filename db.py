@@ -4,10 +4,10 @@ from cryptography.hazmat.primitives import hashes
 
 def connect():
   mydb = pymysql.connect(
-  host="localhost",
-  user="root",
-  passwd="password",
-  db='python_DB'
+  host="remotemysql.com",
+  user="wxJaoqAAXG",
+  passwd="stWP2VBwNA",
+  db='wxJaoqAAXG'
   )
   return mydb
 
@@ -15,7 +15,28 @@ def check(username, password):
   try:
     db = connect()
     with db.cursor() as cursor:
-      sql = """SELECT `username` from `python_DB`.`login` as `login` WHERE (`username` = %s) AND (`password` = %s);"""
+      sql = """SELECT `username` from `wxJaoqAAXG`.`login` as `login` WHERE (`username` = %s) AND (`password` = %s);"""
+      digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
+      
+      digest.update(password.encode())
+      sendpass = str(digest.finalize())
+      tuple = (username, sendpass)
+      cursor.execute(sql, tuple)
+      result = cursor.fetchall()
+      if len(result) == 0:
+        return False
+      else:
+        return True
+  finally:
+    db.commit()
+    db.close()
+
+def new(username, password):
+  try:
+    db = connect()
+    with db.cursor() as cursor:
+      sql = """ INSERT INTO login (username, password) VALUES (%s, %s);"""
+
       digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
       
       digest.update(password.encode())
@@ -46,7 +67,7 @@ def delete(name, username):
   try:
     db = connect()
     with db.cursor() as cursor:
-      sql = """DELETE FROM `python_DB`.`contacts` WHERE (`name` = %s) and (`username` = %s);"""
+      sql = """DELETE FROM `wxJaoqAAXG`.`contacts` WHERE (`name` = %s) and (`username` = %s);"""
       tuple = (name, username)
       cursor.execute(sql, tuple)
   finally:
@@ -57,7 +78,7 @@ def show(name):
   try:
     db = connect()
     with db.cursor() as cursor:
-      sql = """SELECT `name`, `address`, `zip_code`, `email`, `phone_number` from `python_DB`.`contacts` as `contacts` WHERE (`username` = %s);"""
+      sql = """SELECT `name`, `address`, `zip_code`, `email`, `phone_number` from `wxJaoqAAXG`.`contacts` as `contacts` WHERE (`username` = %s);"""
       tuple = name
       cursor.execute(sql, tuple)
       addresses = cursor.fetchall()
