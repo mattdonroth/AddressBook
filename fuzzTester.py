@@ -104,10 +104,7 @@ for test_command in test_commands:
     p.stdin.write(test_command.encode())
     p.stdin.write('\n'.encode())
     p.stdin.flush()
-<<<<<<< HEAD
     
-=======
->>>>>>> 7197b933b15fd367aa790d277bef7cba5bc26f80
 
 p.stdin.close()
 for line in p.stdout.readlines():
